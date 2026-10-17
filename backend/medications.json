@@ -1,1 +1,152 @@
-# Example medication data
+{
+  "medications": [
+    {
+      "id": "000",
+      "name": "Example Medication",
+      "constraints": [
+        {
+          "type": "before_meal",
+          "meal": "breakfast",
+          "minMinutes": 30,
+          "maxMinutes": 60
+        },
+        {
+          "type": "with_meal"
+        },
+        {
+          "type": "separation",
+          "medicationId": "med_b",
+          "minMinutes": 240
+        },
+        {
+          "type": "interval",
+          "minMinutes": 240
+        },
+        {
+          "type": "warning",
+          "avoid": "alcohol, weed"
+        }
+      ]
+    },
+    {
+      "id": "001",
+      "name": "Levothyroxine",
+      "constraints": [
+        {
+          "type": "before_meal",
+          "meal": "breakfast",
+          "minMinutes": 30,
+          "maxMinutes": 60
+        },
+        {
+          "type": "separation",
+          "medicationId": "Calcium Carbonate",
+          "minMinutes": 240
+        },
+        {
+          "type": "interval",
+          "minMinutes": 1080
+        },
+        {
+          "type": "warning",
+          "avoid": "coffee",
+          "other": "Take on an empty stomach."
+        }
+      ]
+    },
+    {
+      "id": "002",
+      "name": "Calcium Carbonate",
+      "constraints": [
+        {
+          "type": "with_meal"
+        },
+        {
+          "type": "separation",
+          "medicationId": "Calcium Carbonate",
+          "minMinutes": 240
+        },
+        {
+          "type": "interval",
+          "minMinutes": 240
+        }
+      ]
+    },
+    {
+      "id": "003",
+      "name": "Metformin",
+      "constraints": [
+        {
+          "type": "with_meal"
+        },
+        {
+          "type": "interval",
+          "minMinutes": 480
+        },
+        {
+          "type": "warning",
+          "avoid": "alcohol"
+        }
+      ]
+    },
+    {
+      "id": "004",
+      "name": "Atorvastatin",
+      "constraints": [
+        {
+          "type": "interval",
+          "minMinutes": 1080
+        },
+        {
+          "type": "warning",
+          "avoid": "grapefruit juice"
+        }
+      ]
+    },
+    {
+      "id": "005",
+      "name": "Amoxicillin",
+      "constraints": [
+        {
+          "type": "interval",
+          "minMinutes": 420
+        },
+        {
+          "type": "warning",
+          "other": "Taking with food may help reduce stomach pain."
+        }
+      ]
+    },
+    {
+      "id": "006",
+      "name": "Ibuprofen",
+      "constraints": [
+        {
+          "type": "with_meal"
+        },
+        {
+          "type": "interval",
+          "minMinutes": 360
+        },
+        {
+          "type": "warning",
+          "avoid": "alcohol, other NSAIDs"
+        }
+      ]
+    },
+    {
+      "id": "007",
+      "name": "Lisinopril",
+      "constraints": [
+        {
+          "type": "interval",
+          "minMinutes": 1080
+        },
+        {
+          "type": "warning",
+          "avoid": "potassium supplements, salt substitutes"
+        }
+      ]
+    }
+  ]
+}
