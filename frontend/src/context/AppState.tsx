@@ -72,24 +72,56 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     }
   }
 
-      async function moveDose(dose: Dose, newTime: string): Promise<string[]> {
-    if (newTime === dose.time) return [];
-    setLoading(true);
-    try {
-      const res = await editDose(profile, doses, dose, newTime);
-      if (!res.success) {
-        return res.conflicts.length ? res.conflicts : ['That change is not allowed.'];
-      }
-      setChanges(diff(doses, res.doses));
-      setDoses(res.doses);
-      setConflicts([]);
-      return [];
-    } catch (err) {
-      return [err instanceof Error ? err.message : 'Something went wrong'];
-    } finally {
-      setLoading(false);
+  
+async function moveDose(
+  dose: Dose,
+  newTime: string
+): Promise<string[]> {
+  if (newTime === dose.time) return [];
+
+  setLoading(true);
+  setError(null);
+
+  try {
+    const res = await editDose(
+      profile,
+      doses,
+      dose,
+      newTime
+    );
+
+    if (!res.success) {
+      // Prefer Gemini's combined explanation.
+      const message =
+        res.explanation?.trim() ||
+        res.conflicts?.join(' ') ||
+        'That change is not allowed.';
+
+      setConflicts([message]);
+
+      // DoseDrawer expects an array of reasons.
+      return [message];
     }
+
+    setChanges(diff(doses, res.doses));
+    setDoses(res.doses);
+    setConflicts([]);
+    return [];
+
+  } catch (err) {
+    const message =
+      err instanceof Error
+        ? err.message
+        : 'Something went wrong';
+
+    setConflicts([message]);
+    return [message];
+
+  } finally {
+    setLoading(false);
   }
+}
+
 
   return (
     <Ctx.Provider

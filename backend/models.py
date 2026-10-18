@@ -1,6 +1,7 @@
 from typing import Literal, Optional
 from pydantic import BaseModel, Field
 from typing import List
+from typing import Optional
 
 
 class SelectedMedication(BaseModel):
@@ -47,3 +48,5 @@ class EditScheduleRequest(ScheduleRequest):
 
 class EditScheduleResponse(ScheduleResponse):
     routine: DailyRoutine
+    suggestedTime: Optional[str] = None
+    explanation: Optional[str] = None
