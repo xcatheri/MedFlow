@@ -6,7 +6,6 @@ import { toMin } from '../lib/time';
 import type { MiscBlock, Profile, Role } from '../types';
 
 const input = 'w-full rounded-lg border border-navy/30 px-3 py-3 text-base';
-const CUISINES = ['Indian', 'Mediterranean', 'Mexican', 'Chinese', 'Southern', 'Vegetarian', 'Halal', 'Kosher'];
 const ROLES: { id: Role; label: string }[] = [
   { id: 'patient', label: 'Patient' },
   { id: 'caregiver', label: 'Caregiver' },
@@ -52,24 +51,22 @@ export default function ProfilePage() {
   const set = (patch: Partial<Profile>) => setD(x => ({ ...x, ...patch }));
   const setBlock = (id: string, patch: Partial<MiscBlock>) =>
     set({ blocks: d.blocks.map(b => (b.id === id ? { ...b, ...patch } : b)) });
-  const toggleCuisine = (c: string) =>
-    set({ cuisines: d.cuisines.includes(c) ? d.cuisines.filter(x => x !== c) : [...d.cuisines, c] });
 
   const firstRun = entries.length === 0;
   async function save() {
-  const errs = validate(d);
-  setErrors(errs);
-  if (errs.length) return;
-  setProfile(d);
-  setProfile(d);
-  markProfileDone();
-  if (firstRun) {
-    nav('/medications'); // no medications yet, so there is nothing to schedule
-    return;
+    const errs = validate(d);
+    setErrors(errs);
+    if (errs.length) return;
+    setProfile(d);
+    setProfile(d);
+    markProfileDone();
+    if (firstRun) {
+      nav('/medications'); // no medications yet, so there is nothing to schedule
+      return;
+    }
+    await regenerate(d, entries); // asks the backend for a fresh schedule with the new habits
+    nav('/schedule');
   }
-  await regenerate(d, entries); // asks the backend for a fresh schedule with the new habits
-  nav('/schedule');
-}
 
   return (
     <div className='mx-auto flex max-w-xl flex-col gap-4'>
@@ -161,25 +158,6 @@ export default function ProfilePage() {
         >
           <Plus size={16} /> Add a block
         </button>
-      </section>
-
-      <section className='flex flex-col gap-2'>
-        <h2 className='font-medium'>Cuisine preferences</h2>
-        <div className='flex flex-wrap gap-2'>
-          {CUISINES.map(c => (
-            <button
-              key={c}
-              type='button'
-              aria-pressed={d.cuisines.includes(c)}
-              onClick={() => toggleCuisine(c)}
-              className={`rounded-full border px-4 py-2 ${
-                d.cuisines.includes(c) ? 'border-navy bg-sky text-navy' : 'border-navy/30'
-              }`}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
       </section>
 
       {errors.length > 0 && (

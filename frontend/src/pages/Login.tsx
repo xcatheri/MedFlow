@@ -26,7 +26,8 @@ export default function Login() {
     try {
       await signIn(email, password, isNew);
       if (isNew) setProfile({ ...profile, email });
-      nav(isNew || entries.length === 0 ? '/medications' : '/schedule');
+      // new users start by telling us about their day; returning users go straight to their schedule
+      nav(isNew ? '/profile' : entries.length === 0 ? '/medications' : '/schedule');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not sign in');
     } finally {
