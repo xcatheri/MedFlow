@@ -57,19 +57,19 @@ export default function ProfilePage() {
 
   const firstRun = entries.length === 0;
   async function save() {
-  const errs = validate(d);
-  setErrors(errs);
-  if (errs.length) return;
-  setProfile(d);
-  setProfile(d);
-  markProfileDone();
-  if (firstRun) {
-    nav('/medications'); // no medications yet, so there is nothing to schedule
-    return;
+    const errs = validate(d);
+    setErrors(errs);
+    if (errs.length) return;
+    setProfile(d);
+    setProfile(d);
+    markProfileDone();
+    if (firstRun) {
+      nav('/medications'); // no medications yet, so there is nothing to schedule
+      return;
+    }
+    await regenerate(d, entries); // asks the backend for a fresh schedule with the new habits
+    nav('/schedule');
   }
-  await regenerate(d, entries); // asks the backend for a fresh schedule with the new habits
-  nav('/schedule');
-}
 
   return (
     <div className='mx-auto flex max-w-xl flex-col gap-4'>
