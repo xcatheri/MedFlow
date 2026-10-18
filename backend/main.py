@@ -7,12 +7,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from models import ScheduleRequest, ScheduleResponse
 from models import EditScheduleRequest, EditScheduleResponse
 from edits import apply_schedule_edit
+from scheduler import create_schedule
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173",
+                   "http://127.0.0.1:5173"],
     allow_methods=["*"],
     allow_headers=["*"]
 )
@@ -42,12 +44,16 @@ def generate_schedule(request: ScheduleRequest):
                 detail=f"Unknown medication: {selected.name}"
             )
 
-    # Temporary response; scheduling comes next.
-    return ScheduleResponse(
-        success=True,
-        events=[],
-        conflicts=[]
-    )
+    lookup = {med["id"]: med for med in medication_data["medications"]}
+    selected = [
+        {"id": medication_lookup[item.name.strip().casefold()]["id"],
+         "dosesPerDay": item.dosesPerDay}
+        for item in request.medications
+    ]
+    try:
+        return create_schedule(selected, request.routine.model_dump(), lookup)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 @app.post("/edit-schedule", response_model=EditScheduleResponse)
 def edit_schedule(request: EditScheduleRequest):
     lookup = {med["id"]: med for med in medication_data["medications"]}
