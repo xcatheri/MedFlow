@@ -29,3 +29,8 @@ export function isActiveOn(e: MedEntry, date: Date) {
 
 // unique id for one dose on one date (used for taken/skipped status)
 export const doseKey = (d: Dose, dateISO: string) => `${dateISO}|${d.entryId}|${d.time}`;
+
+export const fromMin = (min: number) => {
+  const m = ((min % 1440) + 1440) % 1440;
+  return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+};
