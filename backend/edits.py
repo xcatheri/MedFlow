@@ -2,7 +2,7 @@
 
 from collections import Counter
 
-from constraints import is_valid_dose, to_minutes
+from constraints import explain_violations, format_clock, is_valid_dose, to_minutes
 from scheduler import create_schedule, explain_dose
 
 MEALS = ("breakfast", "lunch", "dinner")
@@ -56,7 +56,11 @@ def check_complete_schedule(events, selected_medications, routine, lookup):
             problems.append(f"Invalid time for {lookup[med_id]['name']} dose {number}")
             continue
         if not clock["wakeUp"] <= time <= clock["bedTime"]:
-            problems.append(f"{lookup[med_id]['name']} dose {number} is outside waking hours")
+            problems.append(
+                f"{lookup[med_id]['name']} must be taken between waking up "
+                f"({format_clock(clock['wakeUp'])}) and bedtime "
+                f"({format_clock(clock['bedTime'])})."
+            )
         numeric_events.append({"medicationId": med_id, "doseNumber": number, "time": time})
 
     for med_id, count in expected.items():
@@ -81,13 +85,25 @@ def check_complete_schedule(events, selected_medications, routine, lookup):
             {"medicationId": other["medicationId"], "time": other["time"]}
             for j, other in enumerate(numeric_events) if j != idx
         ]
-        if not is_valid_dose(
-            lookup[event["medicationId"]], event["time"], routine, others, lookup
+        medication = lookup[event["medicationId"]]
+
+        violations = explain_violations(
+            medication,
+            event["time"],
+            routine,
+            others,
+            lookup
+        )
+
+        problems.extend(violations)
+
+        # Preserve validation if the explanation function misses a violation.
+        if not violations and not is_valid_dose(
+            medication, event["time"], routine, others, lookup
         ):
-            name = lookup[event["medicationId"]]["name"]
             problems.append(
-                f"{name} dose {event['doseNumber']} violates a meal, interval, "
-                "or medication-separation rule"
+                f"{medication['name']} dose {event['doseNumber']} "
+                "violates an unidentified scheduling constraint."
             )
     return problems
 
