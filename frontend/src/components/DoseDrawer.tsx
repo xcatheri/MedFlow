@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { fmt } from '../lib/time';
 import type { Dose, DoseStatus } from '../types';
@@ -8,9 +8,15 @@ type Props = {
   dose: Dose | null;
   onClose: () => void;
   onStatus?: (s: DoseStatus) => void;
+  // returns the reasons a new time was refused; an empty list means it was accepted
+  onMove?: (newTime: string) => Promise<string[]>;
 };
 
-export default function DoseDrawer({ dose, onClose, onStatus }: Props) {
+export default function DoseDrawer({ dose, onClose, onStatus, onMove }: Props) {
+  const [time, setTime] = useState(dose?.time ?? '');
+  const [errors, setErrors] = useState<string[]>([]);
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -21,6 +27,15 @@ export default function DoseDrawer({ dose, onClose, onStatus }: Props) {
 
   if (!dose) return null;
   const s = FOOD_STYLE[dose.foodRule];
+
+  async function saveTime() {
+    if (!onMove) return;
+    setSaving(true);
+    setErrors([]);
+    const reasons = await onMove(time);
+    setSaving(false);
+    if (reasons.length) setErrors(reasons); // when it worked, the page closes this box
+  }
 
   return (
     <div className='fixed inset-0 z-30'>
@@ -67,6 +82,38 @@ export default function DoseDrawer({ dose, onClose, onStatus }: Props) {
             </div>
           )}
         </dl>
+
+        {onMove && (
+          <div className='mt-6 rounded-lg border border-navy/20 p-3'>
+            <label className='flex flex-col gap-1 text-sm text-navy/70'>
+              Change time (applies to every day)
+              <input
+                type='time'
+                step={300}
+                value={time}
+                onChange={e => setTime(e.target.value)}
+                className='rounded-lg border border-navy/30 px-3 py-2 text-base text-navy'
+              />
+            </label>
+            <button
+              disabled={saving || !time || time === dose.time}
+              onClick={saveTime}
+              className='mt-2 w-full rounded-lg bg-sky py-2 text-navy disabled:opacity-50'
+            >
+              {saving ? 'Checking...' : 'Save new time'}
+            </button>
+            {errors.length > 0 && (
+              <div role='alert' className='mt-2 rounded-lg bg-red-50 p-3 text-sm text-red-800'>
+                <p className='font-semibold'>That change is not allowed</p>
+                <ul className='mt-1 list-disc pl-5'>
+                  {errors.map(r => (
+                    <li key={r}>{r}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
 
         {onStatus && (
           <div className='mt-6 flex gap-2'>
