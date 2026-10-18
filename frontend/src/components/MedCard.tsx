@@ -2,7 +2,7 @@ import { MEDS } from '../mock/meds';
 import type { FoodRule, MedEntry } from '../types';
 import WeekdayPicker from './WeekdayPicker';
 
-const input = 'w-full rounded-lg border border-slate-300 px-3 py-3 text-base';
+const input = 'w-full rounded-lg border border-navy/30 px-3 py-3 text-base';
 const FOOD_TEXT: Record<FoodRule, string> = {
   empty: 'Empty stomach',
   with_food: 'With food',
@@ -57,7 +57,7 @@ export default function MedCard({ entry, index, canRemove, onChange, onRemove }:
             key={k}
             onClick={() => set({ kind: k })}
             className={`flex-1 rounded-lg border py-3 ${
-              entry.kind === k ? 'border-teal-600 bg-teal-50 font-medium' : 'border-slate-300'
+              entry.kind === k ? 'border-navy bg-sky/40 font-medium' : 'border-navy/30'
             }`}
           >
             {k === 'otc' ? 'Over the counter' : 'Prescription'}
@@ -81,7 +81,7 @@ export default function MedCard({ entry, index, canRemove, onChange, onRemove }:
         </datalist>
       </label>
       {known && (
-        <p className='text-sm text-teal-700'>
+        <p className='text-sm text-teal'>
           {FOOD_TEXT[known.foodRule]}
           {known.detail && `, ${known.detail}`}
         </p>

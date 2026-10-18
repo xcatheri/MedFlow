@@ -14,7 +14,7 @@ type Props = {
 export default function ChangesBanner({ changes, conflicts, error, loading, onDismiss }: Props) {
   return (
     <>
-      {loading && <p className='rounded-lg bg-slate-100 p-3'>Updating your schedule...</p>}
+      {loading && <p className='rounded-lg bg-sky/30 p-3'>Updating your schedule...</p>}
       {error && (
         <p role='alert' className='rounded-lg bg-red-50 p-3 text-red-700'>
           {error}

@@ -1,1 +1,18 @@
 @import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Merriweather', Georgia, serif;
+
+  --color-navy: #2f4156;
+  --color-sky: #c8d9e6;
+  --color-beige: #f5efeb;
+  --color-teal: #567c8d;
+  --color-laurel: #afb59d;
+}
+
+@layer base {
+  body { background-color: var(--color-beige); color: var(--color-navy); }
+  h1, h2, h3 { font-family: var(--font-heading); color: var(--color-navy); }
+  *, ::before, ::after { border-color: rgb(47 65 86 / 0.2); }
+}

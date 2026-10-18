@@ -5,7 +5,7 @@ import { useAppState } from '../context/AppState';
 import { toMin } from '../lib/time';
 import type { MiscBlock, Profile, Role } from '../types';
 
-const input = 'w-full rounded-lg border border-slate-300 px-3 py-3 text-base';
+const input = 'w-full rounded-lg border border-navy/30 px-3 py-3 text-base';
 const CUISINES = ['Indian', 'Mediterranean', 'Mexican', 'Chinese', 'Southern', 'Vegetarian', 'Halal', 'Kosher'];
 const ROLES: { id: Role; label: string }[] = [
   { id: 'patient', label: 'Patient' },
@@ -75,7 +75,7 @@ export default function ProfilePage() {
             type='button'
             onClick={() => set({ role: r.id })}
             className={`flex-1 rounded-lg border py-3 ${
-              d.role === r.id ? 'border-teal-600 bg-teal-50 font-medium' : 'border-slate-300'
+              d.role === r.id ? 'border-navy bg-sky/40 font-medium' : 'border-navy/30'
             }`}
           >
             {r.label}
@@ -142,7 +142,7 @@ export default function ProfilePage() {
         ))}
         <button
           type='button'
-          className='flex items-center gap-1 self-start text-teal-700'
+          className='flex items-center gap-1 self-start text-teal'
           onClick={() =>
             set({ blocks: [...d.blocks, { id: crypto.randomUUID(), label: 'Work', start: '09:00', end: '17:00' }] })
           }
@@ -161,7 +161,7 @@ export default function ProfilePage() {
               aria-pressed={d.cuisines.includes(c)}
               onClick={() => toggleCuisine(c)}
               className={`rounded-full border px-4 py-2 ${
-                d.cuisines.includes(c) ? 'border-teal-600 bg-teal-600 text-white' : 'border-slate-300'
+                d.cuisines.includes(c) ? 'border-navy bg-sky text-navy' : 'border-navy/30'
               }`}
             >
               {c}
@@ -181,7 +181,7 @@ export default function ProfilePage() {
       <button
         onClick={save}
         disabled={loading}
-        className='rounded-lg bg-teal-600 py-3 text-lg text-white hover:bg-teal-700 disabled:opacity-50'
+        className='rounded-lg bg-sky py-3 text-lg text-navy hover:brightness-95 disabled:opacity-50'
       >
         {loading ? 'Saving...' : 'Save changes'}
       </button>

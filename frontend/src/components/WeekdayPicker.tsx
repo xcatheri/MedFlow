@@ -17,7 +17,7 @@ export default function WeekdayPicker({ value, onChange }: Props) {
             aria-pressed={on}
             onClick={() => toggle(d)}
             className={`h-11 w-11 rounded-full border text-sm font-medium ${
-              on ? 'border-teal-600 bg-teal-600 text-white' : 'border-slate-300 bg-white text-slate-700'
+              on ? 'border-navy bg-sky text-navy' : 'border-navy/30 bg-white text-navy/70'
             }`}
           >
             {label}

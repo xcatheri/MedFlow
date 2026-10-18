@@ -42,10 +42,10 @@ export default function Timeline({ doses, profile, nowMin, statusOf, isChanged, 
       {Array.from({ length: 24 }, (_, h) => (
         <div
           key={h}
-          className='absolute left-0 right-0 border-t border-slate-200'
+          className='absolute left-0 right-0 border-t border-navy/15'
           style={{ top: h * PX_PER_HOUR }}
         >
-          <span className='absolute -top-2.5 left-1 bg-white px-1 text-xs text-slate-500'>
+          <span className='absolute -top-2.5 left-1 bg-white px-1 text-xs text-navy/70'>
             {fmt(`${String(h).padStart(2, '0')}:00`)}
           </span>
         </div>
@@ -53,18 +53,18 @@ export default function Timeline({ doses, profile, nowMin, statusOf, isChanged, 
 
       <div className='absolute bottom-0 right-0 top-0' style={{ left: 72 }}>
         <div
-          className='absolute left-0 right-0 bg-slate-200/60'
+          className='absolute left-0 right-0 bg-navy/10'
           style={{ top: 0, height: toTop(profile.wake) }}
         />
         <div
-          className='absolute left-0 right-0 bg-slate-200/60'
+          className='absolute left-0 right-0 bg-navy/10'
           style={{ top: toTop(profile.sleep), height: HEIGHT - toTop(profile.sleep) }}
         />
 
         {profile.blocks.map(b => (
           <div
             key={b.id}
-            className='absolute left-0 right-0 border border-slate-300 px-2 text-right text-xs text-slate-600'
+            className='absolute left-0 right-0 border border-navy/30 px-2 text-right text-xs text-navy/70'
             style={{ top: toTop(b.start), height: toTop(b.end) - toTop(b.start), backgroundImage: hatch }}
           >
             {b.label}
@@ -74,10 +74,10 @@ export default function Timeline({ doses, profile, nowMin, statusOf, isChanged, 
         {meals.map(m => (
           <div
             key={m.label}
-            className='absolute left-0 right-0 border-t-2 border-slate-400'
+            className='absolute left-0 right-0 border-t-2 border-navy/40'
             style={{ top: toTop(m.time) }}
           >
-            <span className='absolute right-1 top-1 flex items-center gap-1 text-xs font-medium text-slate-600'>
+            <span className='absolute right-1 top-1 flex items-center gap-1 text-xs font-medium text-navy/70'>
               <Utensils size={12} /> {m.label} {fmt(m.time)}
             </span>
           </div>

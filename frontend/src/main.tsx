@@ -5,13 +5,16 @@ import './index.css';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { AppStateProvider } from './context/AppState';
+import { ClockProvider } from './context/ClockContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <AppStateProvider>
-          <App />
+          <ClockProvider>
+            <App />
+          </ClockProvider>
         </AppStateProvider>
       </AuthProvider>
     </BrowserRouter>

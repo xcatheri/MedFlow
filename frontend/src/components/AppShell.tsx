@@ -3,8 +3,9 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { Bandage, Menu, X } from 'lucide-react';
 import { Toaster } from 'sonner';
 import { useAuth } from '../context/AuthContext';
+import { DemoClock } from '../context/ClockContext';
 
-const item = 'block w-full rounded p-3 text-left text-base hover:bg-slate-100';
+const item = 'block w-full rounded p-3 text-left text-base hover:bg-sky/30';
 
 export default function AppShell() {
   const [open, setOpen] = useState(false);
@@ -16,15 +17,15 @@ export default function AppShell() {
   };
 
   return (
-    <div className='flex min-h-screen flex-col bg-slate-50 text-slate-900'>
+    <div className='flex min-h-screen flex-col bg-beige text-navy'>
       <header className='relative flex items-center justify-between border-b bg-white px-4 py-3'>
-        <Link to='/schedule' className='flex items-center gap-2 text-xl font-semibold text-teal-700'>
+        <Link to='/schedule' className='flex items-center gap-2 text-xl font-semibold text-navy font-heading'>
           <Bandage /> MedFlow
         </Link>
         <button
           aria-label='Menu'
           onClick={() => setOpen(o => !o)}
-          className='rounded p-2 hover:bg-slate-100'
+          className='rounded p-2 hover:bg-sky/30'
         >
           {open ? <X /> : <Menu />}
         </button>
@@ -51,10 +52,11 @@ export default function AppShell() {
         <Outlet />
       </main>
 
-      <footer className='border-t bg-white p-3 text-center text-sm text-slate-600'>
+      <footer className='border-t bg-white p-3 text-center text-sm text-teal'>
         Not medical advice. Follow your prescription and ask your pharmacist or prescriber before changing anything.
       </footer>
 
+      <DemoClock />
       <Toaster richColors position='top-center' />
     </div>
   );
