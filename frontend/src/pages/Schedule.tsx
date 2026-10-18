@@ -12,8 +12,8 @@ import { doseKey, isActiveOn, toTop } from '../lib/time';
 import type { Dose } from '../types';
 
 export default function Schedule() {
-  const { profile, entries, doses, statuses, setStatus, changes, conflicts, error, loading, clearChanges } =
-    useAppState();
+  const { profile, entries, doses, statuses, setStatus, changes, conflicts, error, loading, clearChanges, moveDose } =
+  useAppState();
   const { nowMin, dateISO } = useClock();
   const [date, setDate] = useState(new Date());
   const [selected, setSelected] = useState<Dose | null>(null);
@@ -105,11 +105,21 @@ export default function Schedule() {
       </div>
 
       <DoseDrawer
-        dose={selected}
-        onClose={() => setSelected(null)}
-        onStatus={s => {
-          if (selected) setStatus(doseKey(selected, shownISO), s);
-        }}
+      key={selected ? `${selected.entryId}-${selected.time}` : 'closed'}
+      dose={selected}
+      onClose={() => setSelected(null)}
+      onMove={
+        selected
+          ? async newTime => {
+              const reasons = await moveDose(selected, newTime);
+              if (!reasons.length) setSelected(null);
+              return reasons;
+            }
+          : undefined
+      }
+      onStatus={s => {
+        if (selected) setStatus(doseKey(selected, shownISO), s);
+      }}
       />
     </div>
   );

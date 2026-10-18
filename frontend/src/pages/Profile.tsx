@@ -44,7 +44,7 @@ function TimeField({ label, value, onChange }: { label: string; value: string; o
 }
 
 export default function ProfilePage() {
-  const { profile, setProfile, entries, regenerate, loading } = useAppState();
+  const { profile, setProfile, entries, regenerate, loading, markProfileDone } = useAppState();
   const [d, setD] = useState<Profile>(profile);
   const [errors, setErrors] = useState<string[]>([]);
   const nav = useNavigate();
@@ -61,6 +61,8 @@ export default function ProfilePage() {
   setErrors(errs);
   if (errs.length) return;
   setProfile(d);
+  setProfile(d);
+  markProfileDone();
   if (firstRun) {
     nav('/medications'); // no medications yet, so there is nothing to schedule
     return;
