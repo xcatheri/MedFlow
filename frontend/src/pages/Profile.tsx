@@ -21,7 +21,7 @@ function validate(p: Profile): string[] {
   if (wake >= sleep) errs.push('Wake-up time must be before bedtime.');
   for (const [label, t] of [['Breakfast', p.breakfast], ['Lunch', p.lunch], ['Dinner', p.dinner]] as const) {
     const m = toMin(t);
-    if (m < wake || m > sleep) errs.push(`${label} must be between wake-up time and bedtime.`);
+    if (m <= wake || m >= sleep) errs.push(`${label} must be after wake-up time and before bedtime.`);
   }
   if (toMin(p.breakfast) >= toMin(p.lunch) || toMin(p.lunch) >= toMin(p.dinner)) {
     errs.push('Meals must be in order: breakfast, lunch, dinner.');
@@ -55,18 +55,28 @@ export default function ProfilePage() {
   const toggleCuisine = (c: string) =>
     set({ cuisines: d.cuisines.includes(c) ? d.cuisines.filter(x => x !== c) : [...d.cuisines, c] });
 
+  const firstRun = entries.length === 0;
   async function save() {
-    const errs = validate(d);
-    setErrors(errs);
-    if (errs.length) return;
-    setProfile(d);
-    if (entries.length) await regenerate(d, entries);
-    nav('/schedule');
+  const errs = validate(d);
+  setErrors(errs);
+  if (errs.length) return;
+  setProfile(d);
+  if (firstRun) {
+    nav('/medications'); // no medications yet, so there is nothing to schedule
+    return;
   }
+  await regenerate(d, entries); // asks the backend for a fresh schedule with the new habits
+  nav('/schedule');
+}
 
   return (
     <div className='mx-auto flex max-w-xl flex-col gap-4'>
-      <h1 className='text-2xl font-semibold'>User profile</h1>
+      <h1 className='text-2xl font-semibold'>{firstRun ? 'Tell us about your day' : 'User profile'}</h1>
+      {firstRun && (
+        <p className='text-navy/70'>
+          Your usual routine helps us plan around your meals and sleep. Next you will add your medications.
+        </p>
+      )}
 
       <div className='flex gap-2'>
         {ROLES.map(r => (
