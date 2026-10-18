@@ -35,7 +35,7 @@ export default function Timeline({ doses, profile, nowMin, statusOf, isChanged, 
     { label: 'Lunch', time: profile.lunch },
     { label: 'Dinner', time: profile.dinner },
   ];
-  const hatch = 'repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 6px, #e2e8f0 6px, #e2e8f0 12px)';
+  const hatch = 'repeating-linear-gradient(45deg, #f5efeb, #f5efeb 6px, #e6ddd6 6px, #e6ddd6 12px)';
 
   return (
     <div className='relative' style={{ height: HEIGHT }}>
