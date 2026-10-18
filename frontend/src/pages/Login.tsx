@@ -4,7 +4,7 @@ import { Bandage } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useAppState } from '../context/AppState';
 
-const input = 'w-full rounded-lg border border-slate-300 px-3 py-3 text-base';
+const input = 'w-full rounded-lg border border-navy/30 px-3 py-3 text-base';
 
 export default function Login() {
   const [isNew, setIsNew] = useState(true);
@@ -36,10 +36,10 @@ export default function Login() {
 
   return (
     <div className='mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-4 p-6'>
-      <div className='flex flex-col items-center gap-1 text-teal-700'>
+      <div className='flex flex-col items-center gap-1 text-navy'>
         <Bandage size={48} />
         <h1 className='text-3xl font-semibold'>MedFlow</h1>
-        <p className='text-slate-600'>{isNew ? 'Sign up' : 'Log in'}</p>
+        <p className='text-teal/70'>{isNew ? 'Sign up' : 'Log in'}</p>
       </div>
 
       <form
@@ -66,14 +66,14 @@ export default function Login() {
         {error && <p role='alert' className='text-red-600'>{error}</p>}
         <button
           disabled={busy}
-          className='rounded-lg bg-teal-600 py-3 text-white hover:bg-teal-700 disabled:opacity-50'
+          className='rounded-lg bg-sky py-3 text-navy hover:brightness-95 disabled:opacity-50'
         >
           {busy ? 'Please wait...' : isNew ? 'Sign up' : 'Log in'}
         </button>
       </form>
 
       <button
-        className='text-teal-700 underline'
+        className='text-teal underline'
         onClick={() => {
           setIsNew(n => !n);
           setError('');

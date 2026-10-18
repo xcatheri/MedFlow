@@ -52,7 +52,7 @@ export default function Medications() {
       <button
         type='button'
         onClick={() => setDraft(d => [...d, newEntry()])}
-        className='flex items-center justify-center gap-2 rounded-lg border border-dashed border-teal-600 py-3 text-teal-700'
+        className='flex items-center justify-center gap-2 rounded-lg border border-dashed border-navy py-3 text-teal'
       >
         <Plus size={18} /> Add another medication
       </button>
@@ -66,7 +66,7 @@ export default function Medications() {
       <button
         disabled={!valid || loading}
         onClick={generate}
-        className='rounded-lg bg-teal-600 py-3 text-lg text-white hover:bg-teal-700 disabled:opacity-50'
+        className='rounded-lg bg-sky py-3 text-lg text-navy hover:brightness-95 disabled:opacity-50'
       >
         {loading ? 'Generating...' : 'Generate schedule'}
       </button>
