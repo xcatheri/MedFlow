@@ -85,13 +85,25 @@ def check_complete_schedule(events, selected_medications, routine, lookup):
             {"medicationId": other["medicationId"], "time": other["time"]}
             for j, other in enumerate(numeric_events) if j != idx
         ]
-        if not is_valid_dose(
-            lookup[event["medicationId"]], event["time"], routine, others, lookup
+        medication = lookup[event["medicationId"]]
+
+        violations = explain_violations(
+            medication,
+            event["time"],
+            routine,
+            others,
+            lookup
+        )
+
+        problems.extend(violations)
+
+        # Preserve validation if the explanation function misses a violation.
+        if not violations and not is_valid_dose(
+            medication, event["time"], routine, others, lookup
         ):
-            name = lookup[event["medicationId"]]["name"]
             problems.append(
-                f"{name} dose {event['doseNumber']} violates a meal, interval, "
-                "or medication-separation rule"
+                f"{medication['name']} dose {event['doseNumber']} "
+                "violates an unidentified scheduling constraint."
             )
     return problems
 
