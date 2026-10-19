@@ -235,5 +235,5 @@ For a `separation` rule, reference the other drug by its `id` in `backend/medica
 - **Not a medical device.** The rules in `medications.json` are simplified for demonstration.
 ## Team
  
-- Charan
+- Charanpreet
 - Catherine ([@xcatheri](https://github.com/xcatheri))
